@@ -1,0 +1,36 @@
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:90vh;
+}
+
+.cadastrar {
+    display: flex;
+    flex-direction: column;
+    width:60vw;
+    background-color: rgb(124, 207, 210);
+    padding:20px;
+    gap:3vh;
+} 
+
+.cadastrar input {
+    height: 5vh;
+    border-radius: 10px;
+    border:none;
+    padding:5px;
+}
+
+.cadastrar button {
+    height:7vh;
+    border-radius: 50px;
+    margin-top:3vh;
+    border:none;
+    padding:5px;
+    background-color: cadetblue;
+    color:white;
+}
+
+.cadastrar button:hover {
+    background-color: rgb(66, 111, 113);
+}
