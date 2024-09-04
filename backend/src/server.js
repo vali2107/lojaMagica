@@ -155,7 +155,7 @@ app.delete('/usuario/delete/:id', (req, res) => {
 
 // Definir portas de produtos
 // Cadastrar produto
-app.post('/usuario/cadastrar', (req, res) => {
+app.post('/produto/cadastrar', (req, res) => {
     let params = Array(
         req.body.nome,
         req.body.descricao,
@@ -185,7 +185,7 @@ app.post('/usuario/cadastrar', (req, res) => {
     })
 });
 // Listar produtos
-app.get('/usuario/listar', (req, res) => {
+app.get('/produto/listar', (req, res) => {
     const query = "SELECT * FROM produtos";
 
     connection.query(query,params, (err, results) => {
@@ -209,7 +209,7 @@ app.get('/usuario/listar', (req, res) => {
     })
 });
 // Editar produto
-app.put('/usuario/editar/:id', (req, res) => {
+app.put('/produto/editar/:id', (req, res) => {
     let params = Array(
         req.body.valor,
         req.params.id
@@ -237,7 +237,7 @@ app.put('/usuario/editar/:id', (req, res) => {
     })
 });
 // Deletar produto
-app.delete('/usuario/delete/:id', (req, res) => {
+app.delete('/produto/delete/:id', (req, res) => {
     let params = Array(
         req.params.id
     )
@@ -266,8 +266,117 @@ app.delete('/usuario/delete/:id', (req, res) => {
 
 // Definir portas de carrinho
 // Adicionar no carrinho
+app.post('/usuario/:usuario/carrinho', (req, res) => {
+    let params = Array(
+        req.params.usuario,
+        req.body.produto,
+        req.body.quantidade
+    );
+
+    let query = "INSERT INTO carrinho(usuario, produto, quantidade) VALUES(?,?,?);";
+    connection.query(query,params, (err, results) => {
+        if(results) {
+            res
+                .status(201)
+                .json({
+                    success: true,
+                    message: "Sucesso",
+                    data: results
+                })
+        } else {
+            res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Sem Sucesso",
+                    data: err
+                })
+        }
+    })
+});
 // Tirar do carrinho
+app.delete('/usuario/:usuario/carrinho/deletar', (req, res) => {
+    let params = Array(
+        req.params.usuario,
+        req.body.produto
+    )
+    let query = "DELETE FROM carrinho WHERE usuario = ? AND produto = ?";
+
+    connection.query(query,params, (err, results) => {
+        if(results) {
+            res
+                .status(201)
+                .json({
+                    success: true,
+                    message: "Sucesso",
+                    data: results
+                })
+        } else {
+            res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Sem Sucesso",
+                    data: err
+                })
+        }
+    })
+});
 
 // Definir portas de favoritos
 // Adicionar favoritos
+app.post('/usuario/:usuario/favorito', (req, res) => {
+    let params = Array(
+        req.params.usuario,
+        req.body.produto,
+    );
+
+    let query = "INSERT INTO favoritos(usuario, produto) VALUES(?,?);";
+    connection.query(query,params, (err, results) => {
+        if(results) {
+            res
+                .status(201)
+                .json({
+                    success: true,
+                    message: "Sucesso",
+                    data: results
+                })
+        } else {
+            res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Sem Sucesso",
+                    data: err
+                })
+        }
+    })
+});
 // Tirar favoritos
+app.delete('/usuario/:usuario/favoritos/deletar', (req, res) => {
+    let params = Array(
+        req.params.usuario,
+        req.body.produto
+    )
+    let query = "DELETE FROM favoritos WHERE usuario = ? AND produto = ?";
+
+    connection.query(query,params, (err, results) => {
+        if(results) {
+            res
+                .status(201)
+                .json({
+                    success: true,
+                    message: "Sucesso",
+                    data: results
+                })
+        } else {
+            res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Sem Sucesso",
+                    data: err
+                })
+        }
+    })
+});
