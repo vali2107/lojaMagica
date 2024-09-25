@@ -18,6 +18,7 @@ create table produtos(
     valor decimal(5,2) not null,
     src varchar(255) not null,
     status enum('Ativo', 'Inativo') default('Ativo')
+    perfil enum('Admin', 'Usuário') default('Usuário')
 );
 
 create table carrinho(

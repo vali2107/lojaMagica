@@ -48,28 +48,38 @@ app.post('/usuario/cadastrar', (req, res) => {
 
 app.post('/usuario/login', (req, res) => {
     let params = Array(
-        req.body.email,
-        req.body.password,
+        req.body.email
     );    
-    let query = "SELECT * FROM users WHERE email = ? AND password = ?;";
+    let query = "SELECT * FROM users WHERE email = ?;";
 
-    connection.query(query,params, (err, results) => {
-        if(results) {
-            res
-                .status(201)
+    connection.query(query, params, (err, results) => {
+        if(results.length > 0) {
+            let senhaDigitada = req.body.password;
+            let senhaBanco = results[0].password;
+
+            if (senhaDigitada === senhaBanco) {
+                res
+                .status(200)
                 .json({
                     success: true,
                     message: "Sucesso",
-                    data: results
+                    data: results[0]
                 })
-        } else {
-            res
+            } else {
+                res
                 .status(400)
                 .json({
                     success: false,
-                    message: "Sem Sucesso",
-                    data: err
+                    message: "Verifique sua senha!",
                 })
+            }
+        } else {
+            res
+            .status(400)
+            .json({
+                success: false,
+                message: "E-mail não cadastrado",
+            })
         }
     })
 });
