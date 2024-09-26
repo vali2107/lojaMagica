@@ -15,6 +15,7 @@ app.listen(port, () => console.log(`Rodando na porta ${port}`));
 
 // Importar a conexão com o banco
 const connection = require('./db_config')
+const upload = require("./multer");
 
 // Definir portas de usuário
 app.post('/usuario/cadastrar', (req, res) => {
@@ -165,12 +166,12 @@ app.delete('/usuario/delete/:id', (req, res) => {
 
 // Definir portas de produtos
 // Cadastrar produto
-app.post('/produto/cadastrar', (req, res) => {
+app.post('/produto/cadastrar', upload.single('file'), (req, res) => {
     let params = Array(
         req.body.nome,
         req.body.descricao,
         req.body.valor,
-        req.body.src
+        req.file.filename
     );
 
     let query = "INSERT INTO produtos(name, descricao, valor, src) VALUES(?,?,?,?);";
@@ -195,6 +196,7 @@ app.post('/produto/cadastrar', (req, res) => {
     })
 });
 // Listar produtos
+app.use('/uploads', express.static(__dirname + '\\public'))
 app.get('/produto/listar', (req, res) => {
     const query = "SELECT * FROM produtos";
 

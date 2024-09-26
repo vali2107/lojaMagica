@@ -23,6 +23,23 @@
             <input type="text" id="email_login" placeholder="Email">
             <input type="text" id="password_login" placeholder="Senha">
             <button onclick="login(event)">Log-In</button>
+            <button onclick="logout(event)">Log-Out</button>
+        </div>
+        <div class="inserirProduto" style="display: none">
+            <input type="text" id="nome_produto" placeholder="Nome">
+            <input type="text" id="descricao_produto" placeholder="Descrição">
+            <input type="text" id="valor_produto" placeholder="Valor">
+            <input type="file" id="file">
+            <button onclick="inserirProduto(event)">Inserir</button>
+        </div>
+        <div id="catalogo">
+            <div class="item">
+                <img src="assets/nuvem1.png" alt="">
+                <p class="nome">Nuvem Rosa</p>
+                <p class="descricao">Uma nuvem colorida e brilhante para decorar seu céu, criada por Zeus!</p>
+                <p class="preco">R$500,00</p>
+                <i class="fa-solid fa-cart-shopping carrinho" id="nuvem1"></i>
+            </div>
         </div>
     </main>
     <script src="./script.js"></script>

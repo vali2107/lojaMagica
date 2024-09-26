@@ -46,16 +46,95 @@ async function login(event) {
     if(results.success) {
         let userData = results.data;
         localStorage.setItem('informações', JSON.stringify(userData))
-        let html = document.getElementById('informacoes')
-        let dados = JSON.parse(localStorage.getItem('informacoes'))
-        html.innerHTML = `<div style="display: flex; flex-direction: column; align-items: end">
-                        Perfil: ${dados.perfil}
-                        </div>`
-        html.style.display = 'block'
-
+        
         alert(results.message)
         window.location.href = './home.html';
     } else {
         alert(results.message)
     }
 };
+
+
+function logout() {
+    localStorage.removeItem('informacoes')
+    window.location.href = "index.html"
+}
+
+
+window.addEventListener("load", () => {
+    if (localStorage.getItem("informações")) {
+        let html = document.getElementById('informacoes')
+        let dados = JSON.parse(localStorage.getItem('informacoes'))
+        
+        dados.perfil === "admin"
+            ? document.getElementById("inserirProduto").style.display = "block"
+            : document.getElementById("inserirProduto").style.display = "none"
+        
+        html.innerHTML = `<div style="display: flex; flex-direction: column; align-items: end">
+            Perfil: ${dados.perfil}
+            </div>`
+        html.style.display = 'block'
+    }
+})
+
+
+async function inserirProduto(event) {
+    event.preventDefault()
+
+    const nome = document.getElementById("nome_produto").value
+    const descricao = document.getElementById("descricao_produto").value
+    const valor = Number(document.getElementById("valor_produto").value)
+    const file = document.getElementById("file").files[0]
+
+    let formData = new FormData();
+
+    console.log(nome, descricao, valor, file);
+
+    formData.append("nome", nome)
+    formData.append("descricao", descricao)
+    formData.append("valor", valor)
+    formData.append("file", file)
+
+    const response = await fetch('http://localhost:3006/produto/cadastrar', {
+        method: 'POST',
+        body: formData
+    })
+
+    const results = await response.json();
+
+    if(results.success) {        
+        alert(results.message)
+    } else {
+        alert(results.message)
+    }
+}
+
+async function listarProdutos() {
+    const response = await fetch('http://localhost:3006/produto/listar', {
+        method: 'GET',
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+
+    const results = await response.json();
+
+    if(results.success) {
+        let productData = results.data
+        const images = 'http://localhost:3006/uploads/'  
+        let html = document.getElementById('catalogo')
+        productData.forEach(product => {
+            let card = `<div class="item">
+                <img src="${images + product.image}" alt="${product.nome}">
+                <p class="nome">${product.nome}</p>
+                <p class="descricao">${product.descricao}</p>
+                <p class="preco">${product.valor}</p>
+                <i class="fa-solid fa-cart-shopping carrinho" id="nuvem1"></i>
+            </div>
+            `;
+            html.innerHTML += card;
+        })      
+    } else {
+        alert(results.message)
+    }
+}
