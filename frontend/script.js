@@ -45,10 +45,11 @@ async function login(event) {
 
     if(results.success) {
         let userData = results.data;
-        localStorage.setItem('informações', JSON.stringify(userData))
+        console.log(userData)
+        localStorage.setItem('informacoes', JSON.stringify(userData))
         
         alert(results.message)
-        window.location.href = './home.html';
+        //window.location.href = './home.html';
     } else {
         alert(results.message)
     }
@@ -62,11 +63,11 @@ function logout() {
 
 
 window.addEventListener("load", () => {
-    if (localStorage.getItem("informações")) {
+    if (localStorage.getItem("informacoes")) {
         let html = document.getElementById('informacoes')
         let dados = JSON.parse(localStorage.getItem('informacoes'))
         
-        dados.perfil === "admin"
+        dados.perfil === "Admin"
             ? document.getElementById("inserirProduto").style.display = "block"
             : document.getElementById("inserirProduto").style.display = "none"
         
